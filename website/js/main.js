@@ -171,5 +171,46 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // About Page Tab Switching
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    if (tabBtns.length > 0) {
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.getAttribute('data-tab');
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(target).classList.add('active');
+            });
+        });
+    }
+
+    // About Page Stat Counters
+    const stats = document.querySelectorAll('.stat-num');
+    if (stats.length > 0) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = parseInt(entry.target.getAttribute('data-target'));
+                    let count = 0;
+                    const duration = 2000; // 2 seconds
+                    const step = target / (duration / 10);
+                    const timer = setInterval(() => {
+                        count += step;
+                        if (count >= target) {
+                            entry.target.textContent = target;
+                            clearInterval(timer);
+                        } else {
+                            entry.target.textContent = Math.floor(count);
+                        }
+                    }, 10);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        stats.forEach(s => observer.observe(s));
+    }
+
     console.log('Brandzoo Website Loaded');
 });
