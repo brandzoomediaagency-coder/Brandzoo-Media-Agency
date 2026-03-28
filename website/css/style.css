@@ -1080,13 +1080,6 @@ body.mobile-menu-open {
         cursor: pointer;
     }
 
-    .header-actions {
-        gap: 10px;
-    }
-
-    .audit-button {
-        display: none; /* Hide audit button on mobile to prevent clutter */
-    }
 }
 
 @media (max-width: 768px) {
@@ -1345,5 +1338,247 @@ body.mobile-menu-open {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 40px;
+    }
+}
+
+/* Homepage Redesign & SEO Sections */
+
+/* Marquee */
+.marquee-wrapper {
+    background: #f8f9fa;
+    padding: 30px 0;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+}
+
+.marquee-title {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.brand-marquee {
+    display: flex;
+    white-space: nowrap;
+}
+
+.marquee-track {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    animation: marquee_anim 30s linear infinite;
+}
+
+.marquee-track img {
+    height: 35px;
+    opacity: 0.5;
+    filter: grayscale(1);
+    transition: all 0.3s ease;
+}
+
+.marquee-track img:hover {
+    opacity: 1;
+    filter: grayscale(0);
+}
+
+@keyframes marquee_anim {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* Metrics Section */
+.metrics-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.metric-card {
+    background: var(--white);
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+}
+
+.metric-icon {
+    font-size: 30px;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.metric-info h3 {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--deep-blue);
+    margin-bottom: 5px;
+}
+
+.metric-info p {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+}
+
+/* AI Optimization Section */
+.ai-opt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.check-list {
+    margin: 25px 0;
+    padding-left: 0;
+}
+
+.check-list li {
+    margin-bottom: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    list-style: none;
+}
+
+.check-list li i {
+    color: var(--primary-color);
+}
+
+/* FAQ Section */
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: var(--white);
+    margin-bottom: 15px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+}
+
+.faq-question {
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.faq-question:hover {
+    background: #fafafa;
+}
+
+.faq-question h3 {
+    font-size: 17px;
+    margin: 0;
+    color: var(--deep-blue);
+}
+
+.faq-answer {
+    padding: 0 30px 20px;
+    display: none;
+    color: #666;
+    line-height: 1.8;
+}
+
+.faq-item.active .faq-answer {
+    display: block;
+}
+
+.faq-item.active .fa-plus {
+    transform: rotate(45deg);
+}
+
+/* Service Tech Badges */
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.tech-badge {
+    background: #eee;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #555;
+    text-transform: uppercase;
+}
+
+/* Lead Form */
+.lead-form {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.lead-form input, .lead-form select, .lead-form textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.lead-form textarea {
+    height: 120px;
+    margin-bottom: 20px;
+}
+
+.contact-features {
+    margin-top: 40px;
+}
+
+.c-feat {
+    margin-bottom: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.c-feat i {
+    color: var(--primary-color);
+}
+
+@media (max-width: 991px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .ai-opt-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
     }
 }

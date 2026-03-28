@@ -77,62 +77,74 @@ document.addEventListener('DOMContentLoaded', () => {
         'social-media': {
             title: 'Social Media Marketing',
             desc: "Social is in our name, yes, quite literally! We devise outstanding social media strategies that boost a brand's image across multiple channels. We keep an open, inviting dialogue in the content and run strategic ad campaigns that keep bringing mass clientele to the websites, guaranteeing maximum customer conversions every bit of second.",
-            img: 'images/services/social-media.png'
+            img: 'images/services/social-media.png',
+            tech: ['Meta Ads', 'TikTok Pixel', 'LinkedIn Ads', 'Sprout Social']
         },
         'seo': {
             title: 'Search Engine Optimization',
             desc: "Be seen where it matters most. Our SEO experts climb the search rankings to ensure your brand is the king of the organic jungle. We optimize every pixel and word for maximum visibility, driving sustainable organic growth.",
-            img: 'images/services/seo.png'
+            img: 'images/services/seo.png',
+            tech: ['Ahrefs', 'SEMRush', 'Google Search Console', 'Screaming Frog']
         },
         'ppc': {
             title: 'PPC Service',
             desc: "Fast-track your reach with surgical precision. Our Paid Search campaigns are optimized for conversion, ensuring every cent of your budget works as hard as a hunting predator to bring you high-quality leads.",
-            img: 'images/services/ppc.png'
+            img: 'images/services/ppc.png',
+            tech: ['Google Ads', 'Google Tag Manager', 'Microsoft Advertising']
         },
         'influencer': {
             title: 'Influencer Marketing',
             desc: "Leverage the power of the pack. We connect you with the right voices to amplify your brand message authentically across the digital landscape, building trust and engagement through influential partnerships.",
-            img: 'images/services/influencer.png'
+            img: 'images/services/influencer.png',
+            tech: ['HypeAuditor', 'Upfluence', 'GRIN', 'Modash']
         },
         'playstore-reviews': {
             title: 'Playstore reviews',
             desc: "Boost your app's credibility with authentic Playstore reviews. We help you build a trustworthy profile that encourages more downloads and improves your app store ranking, ensuring your app stands out in a crowded marketplace.",
-            img: 'images/services/playstore.png'
+            img: 'images/services/playstore.png',
+            tech: ['AppTweak', 'Sensor Tower', 'Mobile Action']
         },
         'web-dev': {
             title: 'Website Development',
             desc: "Your digital lair, built to last. We create high-performance, custom websites that are as functional as they are beautiful, ensuring a seamless experience across all devices.",
-            img: 'images/services/web-dev.png'
+            img: 'images/services/web-dev.png',
+            tech: ['React', 'Next.js', 'Tailwind CSS', 'Node.js']
         },
         'creative-design': {
             title: 'Creative Designing',
             desc: "Visuals that leave a lasting paw-print. From branding to UI, our designs capture the wild essence of your unique brand identity and communicate your message with creative flair.",
-            img: 'images/services/creative-design.png'
+            img: 'images/services/creative-design.png',
+            tech: ['Adobe Creative Cloud', 'Figma', 'Midjourney AI', 'Canva Pro']
         },
         'ugc-videos': {
             title: 'UGC Videos',
             desc: "Authentic content that converts. Our UGC (User Generated Content) video strategies leverage real users to tell your brand story, creating high-engagement social proof that resonates with your audience and builds genuine trust.",
-            img: 'images/services/ugc.png'
+            img: 'images/services/ugc.png',
+            tech: ['CapCut', 'Adobe Premiere Pro', 'Frame.io', 'Trendalytic']
         },
         'ui-ux': {
             title: 'UI/UX Design',
             desc: "User experiences that feel like second nature. We design intuitive, seamless journeys that keep your customers coming back for more, focusing on accessibility and visual delight.",
-            img: 'images/services/ui-ux.png'
+            img: 'images/services/ui-ux.png',
+            tech: ['Figma', 'Adobe XD', 'Principle', 'Maze']
         },
         'orm': {
             title: 'Online Reputation Management(ORM)',
             desc: "Protect your territory. We manage your online reputation to ensure your brand's bark is always as good as its bite, suppressing negatives and amplifying the positive stories.",
-            img: 'images/services/orm.png'
+            img: 'images/services/orm.png',
+            tech: ['Brandwatch', 'Meltwater', 'Reputon']
         },
         'digital-marketing': {
             title: 'Digital marketing',
             desc: "The complete digital roar. We craft comprehensive digital marketing strategies that unite all channels—social, search, and paid—into a single, high-performance hunting pack for your brand, driving measurable results and market dominance.",
-            img: 'images/services/digital-marketing.png'
+            img: 'images/services/digital-marketing.png',
+            tech: ['HubSpot', 'Salesforce', 'Google Analytics 4', 'Hotjar']
         },
         'wordpress': {
             title: 'WordPress Website Development',
             desc: "Flexible, powerful, and easy to manage. We build custom WordPress solutions tailored to your business's unique needs, from blogs to complex enterprise platforms.",
-            img: 'images/services/wordpress.png'
+            img: 'images/services/wordpress.png',
+            tech: ['WordPress', 'Elementor Pro', 'WooCommerce', 'WP Rocket']
         }
     };
 
@@ -140,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const serviceImg = document.getElementById('service-img');
     const serviceTitle = document.getElementById('service-title');
     const serviceDesc = document.getElementById('service-desc');
+    const serviceTech = document.getElementById('service-tech');
     const serviceDisplay = document.getElementById('service-display');
 
     if (servicePills.length > 0) {
@@ -162,10 +175,34 @@ document.addEventListener('DOMContentLoaded', () => {
                         serviceImg.alt = data.title;
                         serviceTitle.textContent = data.title;
                         serviceDesc.textContent = data.desc;
+                        
+                        // Update tech stack
+                        if (serviceTech && data.tech) {
+                            serviceTech.innerHTML = data.tech.map(t => `<span class="tech-badge">${t}</span>`).join('');
+                        }
 
                         serviceDisplay.style.opacity = '1';
                         serviceDisplay.style.transform = 'translateY(0)';
                     }, 300);
+                }
+            });
+        });
+    }
+
+    // FAQ Accordion logic
+    const faqItems = document.querySelectorAll('.faq-item');
+    if (faqItems.length > 0) {
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all others
+                faqItems.forEach(faq => faq.classList.remove('active'));
+                
+                // Toggle current
+                if (!isActive) {
+                    item.classList.add('active');
                 }
             });
         });
@@ -186,13 +223,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // About Page Stat Counters
-    const stats = document.querySelectorAll('.stat-num');
+    // Page Stat Counters (Supports both .stat-num and .stat-number)
+    const stats = document.querySelectorAll('.stat-num, .stat-number');
     if (stats.length > 0) {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const target = parseInt(entry.target.getAttribute('data-target'));
+                    const targetText = entry.target.getAttribute('data-target');
+                    if (!targetText) return;
+                    
+                    const target = parseInt(targetText);
                     let count = 0;
                     const duration = 2000; // 2 seconds
                     const step = target / (duration / 10);
