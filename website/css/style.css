@@ -132,12 +132,24 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.top-bar-left {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
 }
 
 .top-bar a {
     color: var(--white);
     text-decoration: none;
     transition: opacity 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
 }
 
 .top-bar a:hover {
@@ -145,8 +157,13 @@ img {
 }
 
 .top-bar .separator {
-    margin: 0 15px;
     opacity: 0.3;
+}
+
+@media (max-width: 768px) {
+    .top-bar .separator {
+        display: none;
+    }
 }
 
 .top-bar-left i, .top-bar-right i {
@@ -1009,19 +1026,60 @@ img {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+/* Mobile Menu Styles */
+body.mobile-menu-open {
+    overflow: hidden;
+}
 
-    .main-nav,
-    .cta-button {
+@media (max-width: 991px) {
+    .main-nav {
         display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--white);
+        z-index: 2000;
+        padding: 100px 30px;
+        text-align: left;
+    }
+
+    body.mobile-menu-open .main-nav {
+        display: block;
+    }
+
+    .main-nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 25px;
+    }
+
+    .main-nav a {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--deep-blue);
     }
 
     .mobile-menu-toggle {
         display: block;
+        z-index: 2001;
+        font-size: 24px;
+        cursor: pointer;
     }
 
+    .header-actions {
+        gap: 10px;
+    }
+
+    .audit-button {
+        display: none; /* Hide audit button on mobile to prevent clutter */
+    }
+}
+
+@media (max-width: 768px) {
     .hero-title {
-        font-size: 42px;
+        font-size: 38px;
     }
 
     .row {
@@ -1038,5 +1096,9 @@ img {
 
     .contact-wrapper {
         flex-direction: column;
+    }
+
+    .header-actions .audit-button {
+        display: none;
     }
 }

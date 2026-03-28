@@ -3,22 +3,23 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Navigation Toggle (Mobile)
     const mobileToggle = document.querySelector('.mobile-menu-toggle');
-    const mainNav = document.querySelector('.main-nav');
+    const mainNav = document.querySelector('.nav-links'); // Assuming we wrap UL in nav-links
 
     if (mobileToggle) {
         mobileToggle.addEventListener('click', () => {
-            // Basic toggle for now, can be enhanced with animation
-            alert('Mobile menu clicked - To be implemented with animation');
+            document.body.classList.toggle('mobile-menu-open');
+            mobileToggle.querySelector('i').classList.toggle('fa-bars');
+            mobileToggle.querySelector('i').classList.toggle('fa-times');
         });
     }
 
     // Header Scroll Effect
     const header = document.querySelector('.main-header');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.style.boxShadow = '0 5px 20px rgba(0,0,0,0.1)';
+        if (window.scrollY > 100) {
+            header.classList.add('scrolled');
         } else {
-            header.style.boxShadow = 'none';
+            header.classList.remove('scrolled');
         }
     });
 
