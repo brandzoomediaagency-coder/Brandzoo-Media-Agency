@@ -1124,6 +1124,16 @@ body.mobile-menu-open {
     color: var(--white);
 }
 
+.about-hero .hero-title {
+    color: var(--white);
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+.about-hero .highlight {
+    color: var(--primary-color);
+}
+
 .breadcrumb {
     font-size: 14px;
     margin-bottom: 20px;
