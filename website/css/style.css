@@ -564,6 +564,18 @@ img {
     animation-delay: 2s;
 }
 
+.tag-success {
+    top: 40%;
+    right: -8%;
+    animation-delay: 1s;
+}
+
+.tag-expert {
+    bottom: 35%;
+    left: -8%;
+    animation-delay: 3s;
+}
+
 @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-15px); }
