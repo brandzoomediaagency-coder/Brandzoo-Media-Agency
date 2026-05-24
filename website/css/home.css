@@ -1200,7 +1200,194 @@ html.bz-ready body > * { animation: bzFadeUp .6s ease both; }
     100% { top: 8%;   right: 4%;  }
 }
 
-/* ─── Honor reduced-motion firmly ─────────────────────────── */
+/* ════════════════════════════════════════════════════════════════
+   ▣  STRONGER FLOATING MOTION  ·  Round 2
+   Visible bob/sway/orbit on hero cards, dashboard, FABs,
+   engine icons, phone & laptop mocks, KPI values, badges
+   ════════════════════════════════════════════════════════════════ */
+
+/* ─── Hero floating cards: bigger arcs + tilt sway ───────── */
+.float-card {
+    animation: bzFloatStrong 5.5s ease-in-out infinite;
+    will-change: transform;
+}
+@keyframes bzFloatStrong {
+    0%   { transform: translate3d(0, 0, 0) rotate(0deg); }
+    25%  { transform: translate3d(4px, -14px, 0) rotate(1.2deg); }
+    50%  { transform: translate3d(-3px, -22px, 0) rotate(-1.5deg); }
+    75%  { transform: translate3d(-5px, -10px, 0) rotate(.6deg); }
+    100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+}
+.float-card.fc-meta { animation-duration: 6s;   animation-delay: -.2s; }
+.float-card.fc-ugc  { animation-duration: 5.2s; animation-delay: -1.3s; }
+.float-card.fc-ads  { animation-duration: 6.4s; animation-delay: -2.6s; }
+.float-card.fc-seo  { animation-duration: 5.8s; animation-delay: -3.8s; }
+.float-card.fc-lead { animation-duration: 5s;   animation-delay: -.7s; }
+
+/* nudge cards away from header/announcement bar so they don't overlap */
+@media (min-width: 1025px) {
+    .float-card.fc-meta { top: 4%; left: -12%; }
+    .float-card.fc-ugc  { top: 32%; right: -10%; }
+}
+
+/* ─── Dashboard card: subtle continuous bob (over JS parallax) ─ */
+.dashboard-card {
+    animation: bzDashBob 7s ease-in-out infinite;
+}
+@keyframes bzDashBob {
+    0%, 100% { transform: translate3d(var(--bzpx, 0), calc(var(--bzpy, 0px) - 0px), 0); }
+    50%      { transform: translate3d(var(--bzpx, 0), calc(var(--bzpy, 0px) - 8px), 0); }
+}
+
+/* ─── KPI pill values: subtle float pulse ─────────────────── */
+.kpi-pill strong {
+    display: inline-block;
+    animation: bzKpiPulse 3.5s ease-in-out infinite;
+    animation-delay: var(--bz-delay, 0s);
+}
+.hero-kpis .kpi-pill:nth-child(1) strong { --bz-delay: 0s; }
+.hero-kpis .kpi-pill:nth-child(2) strong { --bz-delay: .35s; }
+.hero-kpis .kpi-pill:nth-child(3) strong { --bz-delay: .7s; }
+.hero-kpis .kpi-pill:nth-child(4) strong { --bz-delay: 1.05s; }
+@keyframes bzKpiPulse {
+    0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 0 transparent); }
+    50%      { transform: translateY(-4px) scale(1.02); filter: drop-shadow(0 6px 12px rgba(0,229,255,0.35)); }
+}
+
+/* ─── Engine node icons: orbit-style float ────────────────── */
+.engine-node .ico {
+    animation: bzNodePulse 4s ease-in-out infinite,
+               bzNodeFloat 5s ease-in-out infinite;
+}
+@keyframes bzNodeFloat {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50%      { transform: translateY(-8px) rotate(6deg); }
+}
+.engine-node:nth-child(2) .ico { animation-delay: -1s, -1.2s; }
+.engine-node:nth-child(3) .ico { animation-delay: -2s, -2.4s; }
+.engine-node:nth-child(4) .ico { animation-delay: -3s, -3.6s; }
+
+/* ─── Bento icons: float on idle ──────────────────────────── */
+.bc-ico { animation: bzIconFloat 4.5s ease-in-out infinite; }
+@keyframes bzIconFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+}
+.bento-card:nth-child(2n) .bc-ico { animation-delay: -1s; }
+.bento-card:nth-child(3n) .bc-ico { animation-delay: -2s; }
+.bento-card:hover .bc-ico { animation: none; transform: translateY(-3px) scale(1.06) rotate(-5deg); }
+
+/* ─── Trust cards icons: float ────────────────────────────── */
+.trust-card .icc { animation: bzIconFloat 5s ease-in-out infinite; }
+.trust-card:nth-child(2n) .icc { animation-delay: -1.2s; }
+.trust-card:nth-child(3n) .icc { animation-delay: -2.4s; }
+
+/* ─── Industries: tiny perpetual bob ──────────────────────── */
+.ind-card i { animation: bzIconFloat 4s ease-in-out infinite; }
+.ind-card:nth-child(3n) i { animation-delay: -1s; }
+.ind-card:nth-child(5n) i { animation-delay: -2s; }
+
+/* ─── Phone mocks: stronger bob + sway ────────────────────── */
+.phone-mock {
+    animation: bzPhoneStrong 5s ease-in-out infinite;
+    animation-delay: var(--phone-bob-delay, 0s);
+}
+@keyframes bzPhoneStrong {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    33%      { transform: translateY(-14px) rotate(-1.2deg); }
+    66%      { transform: translateY(-6px) rotate(1deg); }
+}
+
+/* ─── Laptop mocks: subtle float idle ─────────────────────── */
+.laptop-mock { animation: bzLaptopFloat 6s ease-in-out infinite; }
+@keyframes bzLaptopFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+}
+.web-card:nth-child(2n) .laptop-mock { animation-delay: -1.5s; }
+.web-card:nth-child(3n) .laptop-mock { animation-delay: -3s; }
+.web-card:hover .laptop-mock { animation: none; }
+
+/* ─── FAB WhatsApp & back-to-top: bigger bob ──────────────── */
+.fab-wa {
+    animation: bzFabBobBig 3.5s ease-in-out infinite;
+}
+@keyframes bzFabBobBig {
+    0%, 100% {
+        transform: translateY(0) rotate(0);
+        box-shadow: 0 14px 30px rgba(37,211,102,0.55), 0 0 0 0 rgba(37,211,102,0.5);
+    }
+    50% {
+        transform: translateY(-10px) rotate(-6deg);
+        box-shadow: 0 26px 50px rgba(37,211,102,0.75), 0 0 0 20px rgba(37,211,102,0);
+    }
+}
+.fab-top {
+    animation: bzFabTopBob 4s ease-in-out infinite;
+    animation-delay: -1.2s;
+}
+.fab-top.visible { animation: bzFabTopBob 4s ease-in-out infinite; }
+@keyframes bzFabTopBob {
+    0%, 100% { transform: translateY(0); box-shadow: 0 14px 30px rgba(0,229,255,0.4); }
+    50%      { transform: translateY(-8px); box-shadow: 0 22px 44px rgba(0,229,255,0.6); }
+}
+
+/* ─── Sticky audit FAB: bob with glow pulse ───────────────── */
+.sticky-audit.show { animation: bzAuditBob 4s ease-in-out infinite; }
+@keyframes bzAuditBob {
+    0%, 100% { transform: translateY(0); box-shadow: 0 16px 32px rgba(255,61,139,0.45); }
+    50%      { transform: translateY(-6px); box-shadow: 0 28px 50px rgba(255,61,139,0.7); }
+}
+
+/* ─── Mobile-action-bar buttons: gentle bob ───────────────── */
+.mobile-action-bar .mb-wa { animation: bzMobileBob 4s ease-in-out infinite; }
+.mobile-action-bar .mb-audit { animation: bzMobileBob 4s ease-in-out infinite; animation-delay: -2s; }
+@keyframes bzMobileBob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
+}
+
+/* ─── Floating reaction icons inside phones: stronger ─────── */
+.phone-screen .reel-stats i {
+    animation: bzReactFloat 2.6s ease-in-out infinite;
+}
+@keyframes bzReactFloat {
+    0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 0 transparent); }
+    50%      { transform: translateY(-6px) scale(1.18); color: #FF3D8B; filter: drop-shadow(0 0 10px rgba(255,61,139,0.8)); }
+}
+
+/* ─── Live "Live" pulse dot in dashboard header: float ────── */
+.live-dot { animation: bzLivePulse 2s ease-in-out infinite; }
+@keyframes bzLivePulse {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-2px); }
+}
+
+/* ─── Logo lion: subtle bob ───────────────────────────────── */
+.logo-icon, .footer-logo .logo-icon { display: inline-block; animation: bzLogoBob 4s ease-in-out infinite; }
+@keyframes bzLogoBob {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50%      { transform: translateY(-3px) rotate(-6deg); }
+}
+
+/* ─── Section badges: hover float ─────────────────────────── */
+.section-badge { transition: transform .3s ease; }
+.section-badge:hover { transform: translateY(-3px); }
+
+/* ─── Pause floats when user interacts (hover stops bob) ──── */
+.float-card:hover, .kpi-pill:hover strong,
+.engine-node:hover .ico, .bc-ico:hover,
+.trust-card:hover .icc, .phone-mock:hover,
+.fab-wa:hover, .fab-top:hover, .sticky-audit:hover { animation-play-state: paused; }
+
+/* ─── Mobile: keep floats but smaller arcs ────────────────── */
+@media (max-width: 820px) {
+    .float-card { animation-duration: 5s; }
+    .dashboard-card { animation: none; }
+    .phone-mock { animation-duration: 4s; }
+}
+
+/* ─── SEO Audit rings row ─────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
     .hero::after, .engine::before, .engine::after, .gradient-text,
     .cal-grid .cell.on, .creative-thumb.v2, .fab-wa, .phone-mock,
