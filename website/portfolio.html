@@ -37,8 +37,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/pages.css">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Organization",
+                "@id": "https://brandzoomedia.in/#organization",
+                "name": "Brandzoo Media",
+                "url": "https://brandzoomedia.in",
+                "logo": "https://brandzoomedia.in/images/favicons/android-chrome-512x512.png"
+            },
+            {
+                "@type": "CollectionPage",
+                "name": "Brandzoo Media Case Studies",
+                "url": "https://brandzoomedia.in/portfolio",
+                "about": { "@id": "https://brandzoomedia.in/#organization" }
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://brandzoomedia.in/" },
+                    { "@type": "ListItem", "position": 2, "name": "Case Studies", "item": "https://brandzoomedia.in/portfolio" }
+                ]
+            }
+        ]
+    }
+    </script>
 </head>
 <body>
 
@@ -66,33 +94,40 @@
 
 <header class="main-header" id="main-header">
     <div class="container nav-inner">
-        <a href="index.html" class="logo">
+        <a href="/" class="logo">
             <span class="logo-icon">🦁</span>
             <span>Brandzoo<span class="logo-accent"> Media</span></span>
         </a>
         <nav class="main-nav" id="main-nav">
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
                 <li class="has-dropdown">
-                    <a href="services.html">Services <i class="fas fa-chevron-down" style="font-size:10px"></i></a>
+                    <a href="/services">Services <i class="fas fa-chevron-down" style="font-size:10px"></i></a>
                     <div class="dropdown-menu">
-                        <a href="services.html#performance"><i class="fas fa-chart-line"></i> Performance Marketing</a>
-                        <a href="services.html#meta-google-ads"><i class="fab fa-google"></i> Meta &amp; Google Ads</a>
-                        <a href="services.html#seo"><i class="fas fa-search"></i> SEO &amp; AI Visibility</a>
-                        <a href="services.html#ugc-videos"><i class="fas fa-video"></i> UGC Video Production</a>
-                        <a href="services.html#web-dev"><i class="fas fa-laptop-code"></i> Website Development</a>
-                        <a href="services.html#lead-gen"><i class="fas fa-bullseye"></i> Lead Generation</a>
-                        <a href="services.html#playstore"><i class="fas fa-mobile-alt"></i> Playstore Reviews</a>
+                        <a href="/digital-marketing-agency-delhi"><i class="fas fa-rocket"></i> Digital Marketing Agency</a>
+                        <a href="/performance-marketing-agency"><i class="fas fa-chart-line"></i> Performance Marketing</a>
+                        <a href="/meta-ads-agency"><i class="fab fa-facebook-f"></i> Meta Ads Agency</a>
+                        <a href="/google-ads-agency"><i class="fab fa-google"></i> Google Ads Agency</a>
+                        <a href="/seo-services-delhi"><i class="fas fa-search"></i> SEO Services Delhi</a>
+                        <a href="/social-media-marketing-agency"><i class="fas fa-share-alt"></i> Social Media Marketing</a>
+                        <a href="/ugc-video-production-agency"><i class="fas fa-video"></i> UGC Video Production</a>
+                        <a href="/influencer-marketing-agency"><i class="fas fa-users"></i> Influencer Marketing</a>
+                        <a href="/website-development-services"><i class="fas fa-laptop-code"></i> Website Development</a>
+                        <a href="/landing-page-design-services"><i class="fas fa-window-maximize"></i> Landing Page Design</a>
+                        <a href="/lead-generation-services"><i class="fas fa-bullseye"></i> Lead Generation</a>
+                        <a href="/playstore-reviews-app-growth"><i class="fas fa-mobile-alt"></i> Playstore Reviews</a>
+                        <a href="/google-business-profile-management"><i class="fas fa-map-marker-alt"></i> GBP Management</a>
+                    
                     </div>
                 </li>
-                <li><a href="portfolio.html" class="active">Case Studies</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="/portfolio" class="active">Case Studies</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/contact">Contact</a></li>
             </ul>
         </nav>
         <div class="header-cta">
-            <a href="contact.html" class="btn-primary-nav"><i class="fas fa-rocket"></i> Free Audit</a>
+            <a href="/contact" class="btn-primary-nav"><i class="fas fa-rocket"></i> Free Audit</a>
             <button class="mobile-menu-toggle" id="menuToggle" aria-label="Toggle menu">
                 <span></span><span></span><span></span>
             </button>
@@ -104,13 +139,13 @@
 <section class="page-hero">
     <div class="container">
         <nav class="breadcrumb" data-reveal>
-            <a href="index.html">Home</a><span class="sep">/</span><span class="current">Case Studies</span>
+            <a href="/">Home</a><span class="sep">/</span><span class="current">Case Studies</span>
         </nav>
         <h1 data-reveal>Real <span class="gradient-text">growth stories</span> from real brands.</h1>
         <p class="subtitle" data-reveal data-reveal-delay="100">Across e-commerce, real estate, fintech apps, healthcare, SaaS and local businesses — here's what we built and what we shipped.</p>
         <div class="actions" data-reveal data-reveal-delay="200">
-            <a href="contact.html" class="btn-primary btn-magnetic"><i class="fas fa-magic"></i> Start Your Project</a>
-            <a href="services.html" class="btn-secondary"><i class="fas fa-cubes"></i> View Services</a>
+            <a href="/contact" class="btn-primary btn-magnetic"><i class="fas fa-magic"></i> Start Your Project</a>
+            <a href="/services" class="btn-secondary"><i class="fas fa-cubes"></i> View Services</a>
         </div>
     </div>
 </section>
@@ -139,7 +174,7 @@
                         <div class="item"><div class="v">8.4×</div><div class="l">ROAS</div></div>
                         <div class="item"><div class="v">120d</div><div class="l">Timeline</div></div>
                     </div>
-                    <a href="contact.html" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
+                    <a href="/contact" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
                 </div>
             </article>
 
@@ -153,7 +188,7 @@
                         <div class="item"><div class="v">₹38</div><div class="l">CPL</div></div>
                         <div class="item"><div class="v">90d</div><div class="l">Timeline</div></div>
                     </div>
-                    <a href="contact.html" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
+                    <a href="/contact" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
                 </div>
             </article>
 
@@ -167,7 +202,7 @@
                         <div class="item"><div class="v">4.7★</div><div class="l">Rating</div></div>
                         <div class="item"><div class="v">6m</div><div class="l">Timeline</div></div>
                     </div>
-                    <a href="contact.html" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
+                    <a href="/contact" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
                 </div>
             </article>
 
@@ -181,7 +216,7 @@
                         <div class="item"><div class="v">+382</div><div class="l">Keywords</div></div>
                         <div class="item"><div class="v">5m</div><div class="l">Timeline</div></div>
                     </div>
-                    <a href="contact.html" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
+                    <a href="/contact" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
                 </div>
             </article>
 
@@ -195,7 +230,7 @@
                         <div class="item"><div class="v">1.1s</div><div class="l">Load</div></div>
                         <div class="item"><div class="v">60d</div><div class="l">Timeline</div></div>
                     </div>
-                    <a href="contact.html" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
+                    <a href="/contact" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
                 </div>
             </article>
 
@@ -209,7 +244,7 @@
                         <div class="item"><div class="v">9.4%</div><div class="l">CTR</div></div>
                         <div class="item"><div class="v">60d</div><div class="l">Timeline</div></div>
                     </div>
-                    <a href="contact.html" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
+                    <a href="/contact" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
                 </div>
             </article>
 
@@ -223,7 +258,7 @@
                         <div class="item"><div class="v">₹52</div><div class="l">CPL</div></div>
                         <div class="item"><div class="v">45d</div><div class="l">Timeline</div></div>
                     </div>
-                    <a href="contact.html" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
+                    <a href="/contact" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
                 </div>
             </article>
 
@@ -237,7 +272,7 @@
                         <div class="item"><div class="v">+180%</div><div class="l">Organic</div></div>
                         <div class="item"><div class="v">4m</div><div class="l">Timeline</div></div>
                     </div>
-                    <a href="contact.html" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
+                    <a href="/contact" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
                 </div>
             </article>
 
@@ -251,7 +286,7 @@
                         <div class="item"><div class="v">0.9s</div><div class="l">Load</div></div>
                         <div class="item"><div class="v">75d</div><div class="l">Timeline</div></div>
                     </div>
-                    <a href="contact.html" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
+                    <a href="/contact" class="cta">Discuss Similar Project <i class="fas fa-arrow-right"></i></a>
                 </div>
             </article>
         </div>
@@ -267,7 +302,7 @@
                 <p>Tell us your goals — we'll send a custom growth plan within 24 hours, no obligation.</p>
             </div>
             <div class="actions">
-                <a href="contact.html" class="btn-primary btn-magnetic"><i class="fas fa-magic"></i> Free Audit</a>
+                <a href="/contact" class="btn-primary btn-magnetic"><i class="fas fa-magic"></i> Free Audit</a>
                 <a href="https://wa.me/918368567868" target="_blank" rel="noopener" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
             </div>
         </div>
@@ -278,7 +313,7 @@
 <footer class="main-footer">
     <div class="container footer-grid">
         <div class="footer-brand">
-            <a href="index.html" class="footer-logo"><span class="logo-icon">🦁</span> Brandzoo <span class="logo-accent" style="margin-left:4px">Media</span></a>
+            <a href="/" class="footer-logo"><span class="logo-icon">🦁</span> Brandzoo <span class="logo-accent" style="margin-left:4px">Media</span></a>
             <p>Premium Performance Marketing, SEO, UGC &amp; Website Development agency. Serving brands globally from New Delhi, India.</p>
             <div class="social-icons">
                 <a href="https://www.instagram.com/brandzoomedia" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -291,23 +326,25 @@
         <div class="footer-links">
             <h4>Quick Links</h4>
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="portfolio.html">Case Studies</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/services">Services</a></li>
+                <li><a href="/portfolio">Case Studies</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/contact">Contact</a></li>
             </ul>
         </div>
         <div class="footer-links">
             <h4>Services</h4>
             <ul>
-                <li><a href="services.html#performance">Performance Marketing</a></li>
-                <li><a href="services.html#meta-google-ads">Meta &amp; Google Ads</a></li>
-                <li><a href="services.html#seo">SEO &amp; AI Visibility</a></li>
-                <li><a href="services.html#ugc-videos">UGC Video Production</a></li>
-                <li><a href="services.html#web-dev">Website Development</a></li>
-                <li><a href="services.html#playstore">Playstore Reviews</a></li>
+                <li><a href="/digital-marketing-agency-delhi">Digital Marketing Agency Delhi</a></li>
+                <li><a href="/performance-marketing-agency">Performance Marketing</a></li>
+                <li><a href="/meta-ads-agency">Meta Ads Agency</a></li>
+                <li><a href="/google-ads-agency">Google Ads Agency</a></li>
+                <li><a href="/seo-services-delhi">SEO Services Delhi</a></li>
+                <li><a href="/ugc-video-production-agency">UGC Video Production</a></li>
+                <li><a href="/website-development-services">Website Development</a></li>
+                <li><a href="/lead-generation-services">Lead Generation</a></li>
             </ul>
         </div>
         <div class="footer-contact">
@@ -329,14 +366,14 @@
 
 <a href="https://wa.me/918368567868" target="_blank" rel="noopener" class="fab-wa" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
 <button class="fab-top" id="fabTop" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
-<a href="contact.html" class="sticky-audit" id="stickyAudit"><i class="fas fa-magic"></i> Book Free Audit</a>
+<a href="/contact" class="sticky-audit" id="stickyAudit"><i class="fas fa-magic"></i> Book Free Audit</a>
 
 <nav class="mobile-action-bar">
     <a class="mb-call" href="tel:+918368567868"><i class="fas fa-phone"></i> Call</a>
     <a class="mb-wa" href="https://wa.me/918368567868" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-    <a class="mb-audit" href="contact.html"><i class="fas fa-magic"></i> Free Audit</a>
+    <a class="mb-audit" href="/contact"><i class="fas fa-magic"></i> Free Audit</a>
 </nav>
 
-<script src="js/home.js"></script>
+<script src="/js/home.js"></script>
 </body>
 </html>
