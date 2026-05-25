@@ -1400,3 +1400,153 @@ html.bz-ready body > * { animation: bzFadeUp .6s ease both; }
     body::before { display: none; }
 }
 
+/* ════════════════════════════════════════════════════════════════
+   ▣  DESKTOP PERFORMANCE PASS · v2
+   Goal: keep the premium look, drop GPU layer + paint pressure.
+
+   What this layer changes:
+   1. Stops permanently promoting dozens of cards to their own
+      compositor layer (`will-change`/`preserve-3d` were applied
+      site-wide). Browsers were spending memory + uploading layers
+      that never animate. JS now toggles `will-change` on hover.
+   2. Lighter cursor glow — drops the redundant `filter: blur()`
+      pass (the radial gradient already feathers the edge) and
+      shrinks the element. `mix-blend-mode: screen` stays.
+   3. Hero mesh keeps the soft glow but with a smaller blur radius
+      (20px → 14px) and tighter transform — far cheaper composite.
+   4. `content-visibility: auto` skips paint for offscreen sections.
+      `contain-intrinsic-size` keeps layout stable.
+   5. `contain: paint` isolates expensive cards so a single hover
+      doesn't repaint the whole section.
+
+   All changes are desktop-first; mobile-fix.css remains authoritative
+   for ≤768px and is loaded after this file.
+   ════════════════════════════════════════════════════════════════ */
+
+/* 1 ─ Stop promoting dozens of cards into layers permanently.
+       JS re-applies will-change only while the user is actually
+       interacting with the element. */
+.bento-card,
+.trust-card,
+.cmd-card,
+.case-card,
+.web-card,
+.engine-node,
+.ind-card,
+.dashboard-card,
+.float-card,
+.phone-mock,
+.laptop-mock,
+.btn-magnetic {
+    will-change: auto;
+    transform-style: flat;
+}
+
+/* 2 ─ Lighter cursor glow. `filter: blur` is the single most
+       expensive composite step on a fullscreen-following layer. */
+.bz-cursor-glow {
+    width: 320px;
+    height: 320px;
+    filter: none;
+    background: radial-gradient(circle,
+        rgba(0, 229, 255, 0.22),
+        rgba(124, 58, 237, 0.10) 40%,
+        transparent 70%);
+}
+
+/* 3 ─ Hero animated mesh: same look, smaller blur + lighter motion. */
+.hero::after {
+    filter: blur(14px) saturate(115%);
+    opacity: 0.78;
+    animation-duration: 22s;
+    contain: paint;
+}
+/* The grid drift used `background-position` which is paint-heavy.
+   The radial mesh above already gives the sense of motion, so
+   pause the grid drift on desktop and just keep the static grid. */
+@media (min-width: 821px) {
+    .hero-grid-bg { animation: none; }
+}
+
+/* 4 ─ Big rotating dashed engine rings: keep, but contain so a
+       rotation only repaints inside the engine section. */
+.engine { contain: layout paint; }
+.engine::before,
+.engine::after { will-change: transform; }
+
+/* 5 ─ Isolate heavy cards so hover/tilt repaints stay local. */
+.bento-card,
+.case-card,
+.web-card,
+.cmd-card,
+.trust-card,
+.engine-node,
+.dashboard-card,
+.seo-audit { contain: layout paint; }
+
+/* 6 ─ Skip painting offscreen content. Massive scroll-FPS win on
+       desktop where the hero + 3-4 sections fit on screen but the
+       remaining 8+ sections are eagerly painted today.
+
+       `contain-intrinsic-size` prevents layout shift while the
+       section is not rendered. Values are conservative estimates;
+       browser swaps in real height once content paints. */
+.engine,
+.bento-section, .bento,
+.command-section, .command-grid,
+.case-section, .cases-grid,
+.ugc-section,
+.web-section,
+.industries-section,
+.trust-section,
+.seo-section,
+.funnel-section,
+.faq-section,
+.contact-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 700px;
+}
+/* Hero must NEVER be skipped — it's above the fold. */
+.hero { content-visibility: visible; }
+
+/* 7 ─ JS sets this when hero leaves viewport or tab is hidden.
+       Pauses every particle animation in one go. */
+.hero-particles.bz-particles-paused span { animation-play-state: paused; }
+
+/* 8 ─ `will-change` ONLY while user is hovering — promotes the
+       card to a layer for the hover transition, then drops it. */
+@media (hover: hover) {
+    .bento-card:hover,
+    .trust-card:hover,
+    .cmd-card:hover,
+    .case-card:hover,
+    .web-card:hover,
+    .engine-node:hover,
+    .ind-card:hover,
+    .dashboard-card:hover,
+    .float-card:hover,
+    .phone-mock:hover,
+    .laptop-mock:hover,
+    .btn-magnetic:hover { will-change: transform; }
+}
+
+/* 9 ─ Mobile is governed by mobile-fix.css. We only touch ≤768px
+       here to undo `content-visibility: auto`, because phones often
+       have shorter viewports and the auto skipping can flicker on
+       slower scroll. Keep the safer default there. */
+@media (max-width: 768px) {
+    .engine,
+    .bento-section, .bento,
+    .command-section, .command-grid,
+    .case-section, .cases-grid,
+    .ugc-section,
+    .web-section,
+    .industries-section,
+    .trust-section,
+    .seo-section,
+    .funnel-section,
+    .faq-section,
+    .contact-section {
+        content-visibility: visible;
+    }
+}

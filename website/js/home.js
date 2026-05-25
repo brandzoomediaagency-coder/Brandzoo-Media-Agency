@@ -2,7 +2,14 @@
    Brandzoo Media — Premium Motion Engine (2026)
    Hero parallax · 3D tilt · cursor glow · magnetic · SVG draw ·
    ring fills · stagger reveal · counters · accordions · forms.
-   No external libs. Pure performant DOM.
+
+   v2 — DESKTOP PERFORMANCE PASS
+   · All scroll/mousemove handlers rAF-throttled
+   · Cursor glow lerp self-pauses when idle
+   · Hero parallax + particles gated by IntersectionObserver
+   · 3D tilt scoped to in-viewport elements only
+   · Particles pause on tab hidden + when hero out of view
+   · `will-change` applied only during active interaction
    ═══════════════════════════════════════════════════════════════ */
 
 (() => {
@@ -42,24 +49,53 @@ ready(() => {
 
     /* ──────────────────────────────────────────────────────────
        2.  HEADER + SCROLL FX (sticky, fab, sticky audit, popup)
+            All DOM writes batched inside a single rAF per frame.
        ────────────────────────────────────────────────────────── */
-    const header = $('#main-header');
-    const fabTop = $('#fabTop');
+    const header      = $('#main-header');
+    const fabTop      = $('#fabTop');
     const stickyAudit = $('#stickyAudit');
-    let popupShown = false;
+    let popupShown    = false;
 
-    const onScroll = () => {
-        const y = window.scrollY;
-        if (header) header.classList.toggle('scrolled', y > 60);
-        if (fabTop) fabTop.classList.toggle('visible', y > 500);
-        if (stickyAudit) stickyAudit.classList.toggle('show', y > 800);
+    // Cache previous state so we don't repeatedly write to className/style.
+    let prevHeaderScrolled = false;
+    let prevFabVisible     = false;
+    let prevAuditShow      = false;
+    let scrollTicking      = false;
+    let lastScrollY        = 0;
 
-        // page progress for top progress bar
+    const onScrollFrame = () => {
+        scrollTicking = false;
+        const y = lastScrollY;
+
+        const headerScrolled = y > 60;
+        if (header && headerScrolled !== prevHeaderScrolled) {
+            header.classList.toggle('scrolled', headerScrolled);
+            prevHeaderScrolled = headerScrolled;
+        }
+        const fabVisible = y > 500;
+        if (fabTop && fabVisible !== prevFabVisible) {
+            fabTop.classList.toggle('visible', fabVisible);
+            prevFabVisible = fabVisible;
+        }
+        const auditShow = y > 800;
+        if (stickyAudit && auditShow !== prevAuditShow) {
+            stickyAudit.classList.toggle('show', auditShow);
+            prevAuditShow = auditShow;
+        }
+
+        // page progress for top progress bar (CSS uses transform: scaleX)
         const doc = document.documentElement;
         const max = (doc.scrollHeight - window.innerHeight) || 1;
-        document.documentElement.style.setProperty('--bz-scroll', (y / max).toFixed(4));
+        doc.style.setProperty('--bz-scroll', (y / max).toFixed(4));
 
         if (!popupShown && y > 2200 && !sessionStorage.getItem('auditDismissed')) showPopup();
+    };
+
+    const onScroll = () => {
+        lastScrollY = window.scrollY;
+        if (scrollTicking) return;
+        scrollTicking = true;
+        requestAnimationFrame(onScrollFrame);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -69,25 +105,45 @@ ready(() => {
 
     /* ──────────────────────────────────────────────────────────
        3.  HERO PARTICLES (multi-color, brighter, depth)
+            · Count capped (desktop 28, mobile 18)
+            · Paused when hero out of view OR tab hidden
        ────────────────────────────────────────────────────────── */
     const pc = $('#heroParticles');
     if (pc && !reducedMotion) {
-        const count = isMobile ? 22 : 42;
+        const count   = isMobile ? 18 : 28;
         const palette = ['#00E5FF', '#7C3AED', '#FF3D8B', '#B6F03A', '#FFB020'];
+        const frag    = document.createDocumentFragment();
         for (let i = 0; i < count; i++) {
-            const s = document.createElement('span');
-            const size = 2 + Math.random() * 4;
+            const s     = document.createElement('span');
+            const size  = 2 + Math.random() * 4;
             const color = palette[i % palette.length];
             s.style.width = s.style.height = size + 'px';
             s.style.left  = (Math.random() * 100) + '%';
             s.style.top   = (60 + Math.random() * 60) + '%';
             s.style.animationDuration = (10 + Math.random() * 18) + 's';
-            s.style.animationDelay = (-Math.random() * 15) + 's';
+            s.style.animationDelay    = (-Math.random() * 15) + 's';
             s.style.opacity = (0.25 + Math.random() * 0.55).toFixed(2);
             s.style.background = color;
-            s.style.boxShadow = `0 0 ${6 + size * 2}px ${color}`;
-            pc.appendChild(s);
+            // Smaller glow keeps paint cost down on desktop
+            s.style.boxShadow  = `0 0 ${4 + size}px ${color}`;
+            frag.appendChild(s);
         }
+        pc.appendChild(frag);
+
+        // Pause when offscreen — saves paint on long pages
+        if ('IntersectionObserver' in window) {
+            const heroVisObs = new IntersectionObserver(([entry]) => {
+                pc.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
+                // Children inherit via CSS rule below
+                pc.classList.toggle('bz-particles-paused', !entry.isIntersecting);
+            }, { threshold: 0 });
+            heroVisObs.observe(pc);
+        }
+
+        // Pause when tab hidden
+        document.addEventListener('visibilitychange', () => {
+            pc.classList.toggle('bz-particles-paused', document.hidden);
+        });
     }
 
     /* ──────────────────────────────────────────────────────────
@@ -211,7 +267,6 @@ ready(() => {
 
     /* ──────────────────────────────────────────────────────────
        9.  FORM VALIDATION (LEAD + CONTACT + POPUP) — single handler
-            (Fixes prior leadForm-before-init ReferenceError.)
        ────────────────────────────────────────────────────────── */
     const validateForm = (form, fields, onSuccess) => {
         let ok = true;
@@ -250,7 +305,6 @@ ready(() => {
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Collect required fields dynamically
             const requiredIds = $$('input[required], select[required], textarea[required]', contactForm)
                 .map(el => el.id).filter(Boolean);
             validateForm(contactForm, requiredIds, () => {
@@ -275,7 +329,7 @@ ready(() => {
     /* ──────────────────────────────────────────────────────────
        10. AUDIT POPUP (scroll + exit-intent)
        ────────────────────────────────────────────────────────── */
-    const popup = $('#auditPopup');
+    const popup      = $('#auditPopup');
     const popupClose = $('#popupClose');
     const popupForm  = $('#popupForm');
 
@@ -325,113 +379,257 @@ ready(() => {
     });
 
     /* ──────────────────────────────────────────────────────────
-       12. MAGNETIC CTAs   (desktop only)
+       12. MAGNETIC CTAs   (desktop only — rAF throttled)
+            Rect cached on mouseenter to avoid forced layout reads.
        ────────────────────────────────────────────────────────── */
     if (!reducedMotion && !isTouch) {
         $$('.btn-magnetic').forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const r = btn.getBoundingClientRect();
-                const x = e.clientX - r.left - r.width / 2;
-                const y = e.clientY - r.top  - r.height / 2;
-                btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+            let raf = 0;
+            let mx = 0, my = 0;
+            let rect = null;
+            const apply = () => {
+                raf = 0;
+                btn.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
+            };
+            btn.addEventListener('mouseenter', () => {
+                rect = btn.getBoundingClientRect();
             });
-            btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+            btn.addEventListener('mousemove', (e) => {
+                if (!rect) rect = btn.getBoundingClientRect();
+                mx = (e.clientX - rect.left - rect.width  / 2) * 0.25;
+                my = (e.clientY - rect.top  - rect.height / 2) * 0.25;
+                if (!raf) raf = requestAnimationFrame(apply);
+            }, { passive: true });
+            btn.addEventListener('mouseleave', () => {
+                if (raf) cancelAnimationFrame(raf);
+                raf = 0;
+                rect = null;
+                btn.style.transform = '';
+            });
         });
     }
 
     /* ──────────────────────────────────────────────────────────
-       13. BENTO HOVER SPOTLIGHT + CARD CURSOR-TRACK
+       13. BENTO HOVER SPOTLIGHT (rAF throttled, hover-gated)
+            Rect cached on mouseenter.
        ────────────────────────────────────────────────────────── */
     if (!reducedMotion && !isTouch) {
         $$('.bento-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const r = card.getBoundingClientRect();
-                const x = ((e.clientX - r.left) / r.width) * 100;
-                const y = ((e.clientY - r.top)  / r.height) * 100;
-                card.style.setProperty('--mx', x + '%');
-                card.style.setProperty('--my', y + '%');
+            let raf = 0;
+            let cx = 0, cy = 0;
+            let rect = null;
+            const apply = () => {
+                raf = 0;
+                card.style.setProperty('--mx', cx + '%');
+                card.style.setProperty('--my', cy + '%');
+            };
+            card.addEventListener('mouseenter', () => {
+                rect = card.getBoundingClientRect();
             });
+            card.addEventListener('mousemove', (e) => {
+                if (!rect) rect = card.getBoundingClientRect();
+                cx = ((e.clientX - rect.left) / rect.width)  * 100;
+                cy = ((e.clientY - rect.top)  / rect.height) * 100;
+                if (!raf) raf = requestAnimationFrame(apply);
+            }, { passive: true });
+            card.addEventListener('mouseleave', () => { rect = null; });
         });
 
         /* ──────────────────────────────────────────────────────
            14. 3D TILT (lightweight VanillaTilt-style)
+                · Smaller selector set (most-impactful cards only)
+                · `will-change` toggled only during hover
+                · Skip elements that are offscreen (perf guard)
            ────────────────────────────────────────────────────── */
         const tiltTargets = [
-            '.dashboard-card', '.cmd-card', '.bento-card', '.trust-card',
-            '.case-card', '.web-card', '.engine-node', '.phone-mock',
-            '.laptop-mock', '.seo-audit', '[data-tilt]'
+            '.dashboard-card', '.cmd-card', '.bento-card',
+            '.case-card', '.web-card', '.seo-audit', '[data-tilt]'
         ];
-        $$(tiltTargets.join(',')).forEach(el => {
-            const max = parseFloat(el.getAttribute('data-tilt-max')) || 6;
+        const tiltEls = $$(tiltTargets.join(','));
+
+        // Only initialise tilt for elements that ever come into view —
+        // saves dozens of mousemove listeners on long pages.
+        if ('IntersectionObserver' in window && tiltEls.length) {
+            const tiltObs = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target.__bzTiltWired) {
+                        wireTilt(entry.target);
+                        entry.target.__bzTiltWired = true;
+                        tiltObs.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '200px 0px' });
+            tiltEls.forEach(el => tiltObs.observe(el));
+        } else {
+            tiltEls.forEach(wireTilt);
+        }
+
+        function wireTilt(el) {
+            const max   = parseFloat(el.getAttribute('data-tilt-max')) || 6;
             const scale = 1.01;
             let raf = 0;
-            el.style.transformStyle = 'preserve-3d';
-            el.style.willChange = 'transform';
-            const onMove = (e) => {
-                if (raf) cancelAnimationFrame(raf);
-                raf = requestAnimationFrame(() => {
-                    const r = el.getBoundingClientRect();
-                    const px = (e.clientX - r.left) / r.width;
-                    const py = (e.clientY - r.top)  / r.height;
-                    const ry = (px - 0.5) * (max * 2);
-                    const rx = -(py - 0.5) * (max * 2);
-                    el.style.transform =
-                        `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) scale(${scale})`;
-                    el.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
-                    el.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
-                });
+            let ex = 0, ey = 0, rect = null;
+
+            const apply = () => {
+                raf = 0;
+                if (!rect) return;
+                const px = (ex - rect.left) / rect.width;
+                const py = (ey - rect.top)  / rect.height;
+                const ry =  (px - 0.5) * (max * 2);
+                const rx = -(py - 0.5) * (max * 2);
+                el.style.transform =
+                    `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) scale(${scale})`;
+                el.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+                el.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
             };
-            const onLeave = () => {
+            el.addEventListener('mouseenter', () => {
+                el.style.transformStyle = 'preserve-3d';
+                el.style.willChange     = 'transform';
+                rect = el.getBoundingClientRect();
+            });
+            el.addEventListener('mousemove', (e) => {
+                ex = e.clientX;
+                ey = e.clientY;
+                if (!raf) raf = requestAnimationFrame(apply);
+            }, { passive: true });
+            el.addEventListener('mouseleave', () => {
                 if (raf) cancelAnimationFrame(raf);
-                el.style.transform = '';
-            };
-            el.addEventListener('mousemove', onMove);
-            el.addEventListener('mouseleave', onLeave);
-        });
+                raf = 0;
+                rect = null;
+                el.style.transform   = '';
+                el.style.willChange  = '';
+            });
+        }
 
         /* ──────────────────────────────────────────────────────
            15. CURSOR GLOW SPOTLIGHT
+                · Self-pauses the rAF loop when cursor is idle
+                · Stops when window blurs / tab hides
            ────────────────────────────────────────────────────── */
         const cursor = document.createElement('div');
         cursor.className = 'bz-cursor-glow';
         document.body.appendChild(cursor);
-        let cx = 0, cy = 0, tx = 0, ty = 0;
-        document.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
+
+        let cx = -1000, cy = -1000;
+        let tx = -1000, ty = -1000;
+        let raf = 0;
+        let lastMove = 0;
+
         const lerp = () => {
-            cx += (tx - cx) * 0.18;
-            cy += (ty - cy) * 0.18;
+            const dx = tx - cx;
+            const dy = ty - cy;
+            cx += dx * 0.18;
+            cy += dy * 0.18;
             cursor.style.transform = `translate3d(${cx - 200}px, ${cy - 200}px, 0)`;
-            requestAnimationFrame(lerp);
+
+            // Stop the loop once we've effectively settled AND mouse
+            // has been idle for a moment — otherwise we burn a frame forever.
+            const settled = Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5;
+            const idle    = (performance.now() - lastMove) > 120;
+            if (settled && idle) {
+                raf = 0;
+                return;
+            }
+            raf = requestAnimationFrame(lerp);
         };
-        requestAnimationFrame(lerp);
+
+        const kick = () => { if (!raf) raf = requestAnimationFrame(lerp); };
+
+        document.addEventListener('mousemove', (e) => {
+            tx = e.clientX;
+            ty = e.clientY;
+            lastMove = performance.now();
+            kick();
+        }, { passive: true });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && raf) { cancelAnimationFrame(raf); raf = 0; }
+        });
+        window.addEventListener('blur', () => {
+            if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        });
     }
 
     /* ──────────────────────────────────────────────────────────
        16. HERO MOUSE PARALLAX (floating cards drift)
+            · rAF-throttled
+            · Listener detached when hero leaves viewport
+            · `will-change` toggled per-interaction
        ────────────────────────────────────────────────────────── */
     if (!reducedMotion && !isTouch) {
-        const hero = $('.hero');
+        const hero     = $('.hero');
         const floaters = $$('.float-card');
-        const dash    = $('.dashboard-card');
+        const dash     = $('.dashboard-card');
         if (hero && floaters.length) {
-            hero.addEventListener('mousemove', (e) => {
-                const r = hero.getBoundingClientRect();
-                const px = (e.clientX - r.left) / r.width  - 0.5;
-                const py = (e.clientY - r.top)  / r.height - 0.5;
-                floaters.forEach((f, i) => {
+            let rect = null;
+            let mx = 0, my = 0;
+            let raf = 0;
+            let active = false;
+
+            const applyParallax = () => {
+                raf = 0;
+                if (!rect) return;
+                const px = (mx - rect.left) / rect.width  - 0.5;
+                const py = (my - rect.top)  / rect.height - 0.5;
+                for (let i = 0; i < floaters.length; i++) {
                     const depth = 10 + (i % 4) * 6;
-                    f.style.transform =
+                    floaters[i].style.transform =
                         `translate3d(${(-px * depth).toFixed(1)}px, ${(-py * depth).toFixed(1)}px, 0)`;
-                });
+                }
                 if (dash) {
                     dash.style.setProperty('--bzpx', (-px * 12).toFixed(1) + 'px');
-                    dash.style.setProperty('--bzpy', (-py * 8).toFixed(1) + 'px');
+                    dash.style.setProperty('--bzpy', (-py * 8).toFixed(1)  + 'px');
                 }
-            });
-            hero.addEventListener('mouseleave', () => {
-                floaters.forEach(f => { f.style.transform = ''; });
-                if (dash) { dash.style.removeProperty('--bzpx'); dash.style.removeProperty('--bzpy'); }
-            });
+            };
+
+            const onMove = (e) => {
+                mx = e.clientX;
+                my = e.clientY;
+                if (!raf) raf = requestAnimationFrame(applyParallax);
+            };
+            const onEnter = () => {
+                rect = hero.getBoundingClientRect();
+                floaters.forEach(f => { f.style.willChange = 'transform'; });
+                if (dash) dash.style.willChange = 'transform';
+            };
+            const onLeave = () => {
+                if (raf) cancelAnimationFrame(raf);
+                raf = 0;
+                rect = null;
+                floaters.forEach(f => { f.style.transform = ''; f.style.willChange = ''; });
+                if (dash) {
+                    dash.style.removeProperty('--bzpx');
+                    dash.style.removeProperty('--bzpy');
+                    dash.style.willChange = '';
+                }
+            };
+
+            const attach = () => {
+                if (active) return;
+                active = true;
+                hero.addEventListener('mouseenter', onEnter);
+                hero.addEventListener('mousemove',  onMove, { passive: true });
+                hero.addEventListener('mouseleave', onLeave);
+            };
+            const detach = () => {
+                if (!active) return;
+                active = false;
+                hero.removeEventListener('mouseenter', onEnter);
+                hero.removeEventListener('mousemove',  onMove);
+                hero.removeEventListener('mouseleave', onLeave);
+                onLeave();
+            };
+
+            // Only listen while hero is on-screen; once user scrolls past,
+            // tear the listener down so mousemove anywhere on page is cheap.
+            if ('IntersectionObserver' in window) {
+                const heroIO = new IntersectionObserver(([entry]) => {
+                    if (entry.isIntersecting) attach(); else detach();
+                }, { threshold: 0 });
+                heroIO.observe(hero);
+            } else {
+                attach();
+            }
         }
     }
 
@@ -480,8 +678,7 @@ ready(() => {
                 $$('.bz-ring', root).forEach(ring => {
                     const pct = parseFloat(ring.getAttribute('data-score')) || 0;
                     ring.style.setProperty('--p', '0');
-                    let from = 0;
-                    const dur = 1400;
+                    const dur   = 1400;
                     const start = performance.now();
                     const step = (t) => {
                         const k = Math.min(1, (t - start) / dur);
@@ -520,6 +717,6 @@ ready(() => {
         });
     }
 
-    onScroll();
+    onScrollFrame();
 });
 })();
