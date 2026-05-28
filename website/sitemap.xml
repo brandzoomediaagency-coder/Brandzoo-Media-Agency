@@ -3,7 +3,7 @@
     <!-- Home -->
     <url>
         <loc>https://brandzoomedia.in/</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
@@ -11,136 +11,172 @@
     <!-- Core Pages -->
     <url>
         <loc>https://brandzoomedia.in/about</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://brandzoomedia.in/about-brandzoo-media</loc>
+        <lastmod>2026-05-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
         <loc>https://brandzoomedia.in/services</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/portfolio</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/blog</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/contact</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://brandzoomedia.in/free-marketing-audit</loc>
+        <lastmod>2026-05-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.95</priority>
     </url>
 
     <!-- Service Landing Pages -->
     <url>
         <loc>https://brandzoomedia.in/digital-marketing-agency-delhi</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/performance-marketing-agency</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/meta-ads-agency</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/google-ads-agency</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/seo-services-delhi</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
+        <loc>https://brandzoomedia.in/ai-search-optimization-services</loc>
+        <lastmod>2026-05-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.95</priority>
+    </url>
+    <url>
         <loc>https://brandzoomedia.in/social-media-marketing-agency</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/ugc-video-production-agency</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/influencer-marketing-agency</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/website-development-services</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/landing-page-design-services</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/lead-generation-services</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/playstore-reviews-app-growth</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/google-business-profile-management</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
 
-    <!-- Local SEO Pages -->
+    <!-- Local Variant Pages -->
     <url>
         <loc>https://brandzoomedia.in/google-ads-agency-delhi</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.85</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/meta-ads-agency-delhi</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.85</priority>
     </url>
     <url>
         <loc>https://brandzoomedia.in/website-development-company-delhi</loc>
-        <lastmod>2026-05-24</lastmod>
+        <lastmod>2026-05-28</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.85</priority>
     </url>
 
     <!-- Blog Posts -->
+    <url>
+        <loc>https://brandzoomedia.in/blog/ai-search-optimization-for-businesses</loc>
+        <lastmod>2026-05-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.85</priority>
+    </url>
+    <url>
+        <loc>https://brandzoomedia.in/blog/how-to-choose-performance-marketing-agency</loc>
+        <lastmod>2026-05-27</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.85</priority>
+    </url>
+    <url>
+        <loc>https://brandzoomedia.in/blog/what-is-performance-marketing</loc>
+        <lastmod>2026-05-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.85</priority>
+    </url>
     <url>
         <loc>https://brandzoomedia.in/blog/best-digital-marketing-agency-in-delhi</loc>
         <lastmod>2026-05-22</lastmod>
